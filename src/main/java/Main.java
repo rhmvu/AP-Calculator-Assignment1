@@ -115,10 +115,9 @@ class Main implements CalculatorInterface {
 	private String replaceDoubleOperators(String operation) {
 		if(operation.equals(ADDITION_SUBSTRACTION) || operation.equals(SUBSTRACTION_ADDITION)){
 			operation = SUBSTRACTION;
-		}else{
-		if(operation.equals(SUBSTRACTION_SUBSTRACTION) || operation.equals(ADDITION_ADDITION)){
+			
+		}else if(operation.equals(SUBSTRACTION_SUBSTRACTION) || operation.equals(ADDITION_ADDITION)){
 			operation = ADDITION;
-		}
 		}
 		return operation;
 	}
