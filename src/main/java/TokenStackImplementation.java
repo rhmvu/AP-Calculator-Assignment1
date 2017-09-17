@@ -18,6 +18,7 @@ class TokenStackImplementation implements TokenStack{
 		Token result = tokenArray[numberOfTokens - 1];
 		tokenArray[numberOfTokens - 1] = null;
 		numberOfTokens -=1;
+		
 		return result;
 	}
 

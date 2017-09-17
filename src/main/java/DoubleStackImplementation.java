@@ -18,6 +18,7 @@ class DoubleStackImplementation implements DoubleStack{
 		double result = doubleArray[numberOfElements - 1];
 		doubleArray[numberOfElements - 1] = null;
 		numberOfElements -=1;
+		
 		return result;
 	}
 	
