@@ -139,6 +139,7 @@ class Main implements CalculatorInterface {
 			if (type == Token.NUMBER_TYPE) {
 				stack.push(Double.parseDouble(token.getValue()));
 			} else if (type == Token.OPERATOR_TYPE) {
+				
 				try {
 					double operand1 = stack.pop();
 					double operand2 = stack.pop();
