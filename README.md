@@ -1,5 +1,3 @@
-#Calculator assignment for Advanced Programming.
-
 ## How to build
 Run `./gradlew jar`.
 Then run `java -jar build/libs/AP1-1.0.jar`
