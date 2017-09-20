@@ -5,11 +5,11 @@ class Main implements CalculatorInterface {
 	static final String OPERATORS = "+-*/^", OPEN_PARENTHESIS = "(", CLOSE_PARENTHESIS = ")", ADDITION = "+",
 			SUBSTRACTION = "-", MULTIPLICATION = "*", DIVISION = "/", POWER = "^",
 			ADDITION_SUBSTRACTION = "+-" ,ADDITION_ADDITION= "++", SUBSTRACTION_ADDITION = "-+", SUBSTRACTION_SUBSTRACTION = "--",
-			WELCOME_MESSAGE = "Welcome to Basic Calculator by Kostas Mountzakis and Ruben van der Ham\nType 'exit' to exit\nUse argument '--help' for more info\nType your input below:",
-			ERROR_MESSAGE = "Invalid token in the arithmetic expression. Please fix your input. Try argument '--help' for more information",
-			ERROR_MESSAGE_2 = "Mismatched parenthesis detected. Please check your input. Try argument '--help' for more information",
-			ERROR_MESSAGE_3 = "Invalid input, remaining numbers on stack. Please fix your input. Try argument '--help' for more information",
-			ERROR_MESSAGE_4 = "Invalid input, Try argument '--help' for more information\nOperation misses an operand for operation: ",
+			WELCOME_MESSAGE = "Welcome to Basic Calculator by Kostas Mountzakis and Ruben van der Ham\nType 'exit' to exit\nUse argument 'help' for more info\nType your input below:",
+			ERROR_MESSAGE = "Invalid token in the arithmetic expression. Please fix your input. Try argument 'help' for more information",
+			ERROR_MESSAGE_2 = "Mismatched parenthesis detected. Please check your input. Try argument 'help' for more information",
+			ERROR_MESSAGE_3 = "Invalid input, remaining numbers on stack. Please fix your input. Try argument 'help' for more information",
+			ERROR_MESSAGE_4 = "Invalid input, Try argument 'help' for more information\nOperation misses an operand for operation: ",
 			ERROR_MESSAGE_5 = "Input results a calculation this calculator's power function can not handle, please use lower (or higher) operands",
 			HELP_MESSAGE = "This basic calculator works with operators +,-,*,/,^ and parenthesis '(' and ')'.\nBasic Calculator REQUIRES you to put a space between each character.\nFor example:'93 * 38 / ( 1 * ( ( 72 ) ) ) * 23'\n\nBasic Calculator by Kostas Mountzakis & Ruben van der Ham";
 	static final int NON_OPERATOR_PRECEDENCE = -1, HIGH_PRECEDENCE = 3, MEDIUM_PRECEDENCE = 2, LOW_PRECEDENCE = 1;
@@ -208,6 +208,8 @@ class Main implements CalculatorInterface {
 	}
 
 	private void start() {
+		System.out.printf("%s\n", WELCOME_MESSAGE);
+		
 		Scanner in = new Scanner(System.in);
 		String input;
 		
@@ -216,7 +218,11 @@ class Main implements CalculatorInterface {
 			
 			if (input.equals("exit")) {
 				System.out.println("Basic Calculator closed by user");
-				break;
+				System.exit(0);
+			}
+			if (input.equals("help")) {
+				System.out.println(HELP_MESSAGE);
+				System.exit(0);
 			}
 			TokenList infix = readTokens(input);
 			TokenList postfix = shuntingYard(infix);
@@ -228,15 +234,6 @@ class Main implements CalculatorInterface {
 	}
 
 	public static void main(String[] argv) {
-		try {
-			if (argv[0].equals("--help")) {
-				System.out.printf("%s\n", HELP_MESSAGE);
-				System.exit(0);
-			}
-		} catch (Exception e) {
-		}
-
-		System.out.printf("%s\n", WELCOME_MESSAGE);
 		new Main().start();
 	}
 }
