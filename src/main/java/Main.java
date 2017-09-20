@@ -91,7 +91,6 @@ class Main implements CalculatorInterface {
 		double result = 0;
 			
 		switch (operation) {
-		
 		case ADDITION:
 			result = operand1 + operand2;
 			break;
@@ -197,6 +196,7 @@ class Main implements CalculatorInterface {
 		}
 		
 		while (operatorStack.size() > 0) {
+			
 			if (isParenthesis(operatorStack.top().getValue())) {
 				System.out.println(ERROR_MESSAGE_2);
 				System.exit(1);
