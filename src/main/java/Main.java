@@ -158,6 +158,7 @@ class Main implements CalculatorInterface {
 					double operand2 = stack.pop();
 					double operationResult = performOperation(operand1, operand2, token.getValue());
 					stack.push(operationResult);
+					
 				} catch (ArrayIndexOutOfBoundsException e) {
 					System.out.printf("%s'%s'\n", ERROR_MESSAGE_4, token.getValue());
 					System.exit(1);
