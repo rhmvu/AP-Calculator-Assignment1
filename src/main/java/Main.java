@@ -22,7 +22,7 @@ class Main implements CalculatorInterface {
 						ERROR_MESSAGE_5 = "Input results a calculation this calculator's power function can not handle, please use lower (or higher) operands",
 						HELP_MESSAGE = "This basic calculator works with operators +,-,*,/,^ and parenthesis '(' and ')'.\n"
 										+ "Basic Calculator REQUIRES you to put a space between each character.\nFor example:'93 * 38 / ( 1 * ( ( 72 ) ) ) * 23'\n\n"
-										+ "Basic Calculator by Kostas Mountzakis & Ruben van der Ham";
+										+ "Basic Calculator by Kostas Moumtzakis & Ruben van der Ham";
 	static final int NON_OPERATOR_PRECEDENCE = -1, 
 						HIGH_PRECEDENCE = 3, 
 						MEDIUM_PRECEDENCE = 2, 
@@ -83,7 +83,7 @@ class Main implements CalculatorInterface {
 			result = new TokenImplementation(token, Token.PARENTHESIS_TYPE, NON_OPERATOR_PRECEDENCE);
 		} else {
 			System.err.println(ERROR_MESSAGE);
-			System.exit(0);
+			System.exit(1);
 		}
 		
 		return result;
