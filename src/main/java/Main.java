@@ -75,7 +75,7 @@ class Main implements CalculatorInterface {
 		return (token.equals(OPEN_PARENTHESIS) || token.equals(CLOSE_PARENTHESIS));
 	}
 
-	private Token configureToken(String token) {
+	private Token configureToken(String token) throws APException {
 		Token result = null;
 		token = replaceDoubleOperators(token);
 		
@@ -87,13 +87,13 @@ class Main implements CalculatorInterface {
 		} else if (isParenthesis(token)) {
 			result = new TokenImplementation(token, Token.PARENTHESIS_TYPE, NON_OPERATOR_PRECEDENCE);
 		} else {
-			error.println(ERROR_MESSAGE);
+			throw new APException(ERROR_MESSAGE);
 		}
 		
 		return result;
 	}
 
-	public TokenList readTokens(String input) {
+	public TokenList readTokens(String input) throws APException {
 		String[] tokenArray = input.split("\\s+"); // splits string in space and creates an array with  only the tokens
 		TokenList result = new TokenListImplementation(tokenArray.length);
 
@@ -105,7 +105,7 @@ class Main implements CalculatorInterface {
 		return result;
 	}
 
-	private double performOperation(double operand1, double operand2, String operation) {
+	private double performOperation(double operand1, double operand2, String operation) throws APException {
 		double result = 0;
 			
 		switch (operation) {
@@ -125,7 +125,7 @@ class Main implements CalculatorInterface {
 			try{
 				result = power(operand2, operand1);
 			}catch(StackOverflowError e){
-				error.println(ERROR_MESSAGE_5);
+				throw new APException(ERROR_MESSAGE_5);
 			}
 			break;
 		}
@@ -144,7 +144,7 @@ class Main implements CalculatorInterface {
 		return operation;
 	}
 
-	public Double rpn(TokenList tokens) {
+	public Double rpn(TokenList tokens) throws APException {
 		DoubleStack stack = new DoubleStackImplementation(tokens.size());
 		Token token;
 
@@ -163,19 +163,19 @@ class Main implements CalculatorInterface {
 					stack.push(operationResult);
 					
 				} catch (ArrayIndexOutOfBoundsException e) {
-					error.printf("%s'%s'\n", ERROR_MESSAGE_4, token.getValue());
+					throw new APException(ERROR_MESSAGE_4 + token.getValue());
 				}
 			}
 		}
 
 		if (stack.size() != 1) {
-			error.println(ERROR_MESSAGE_3);
+			throw new APException(ERROR_MESSAGE_3);
 		}
 		
 		return stack.top();
 	}
 
-	public TokenList shuntingYard(TokenList tokens) {
+	public TokenList shuntingYard(TokenList tokens) throws APException {
 		TokenList result = new TokenListImplementation(tokens.size());
 		TokenStack operatorStack = new TokenStackImplementation(tokens.size());
 		Token token;
@@ -205,7 +205,7 @@ class Main implements CalculatorInterface {
 				if (operatorStack.top().getValue().equals(OPEN_PARENTHESIS)) {
 					operatorStack.pop();	
 				} else {
-					error.println(ERROR_MESSAGE_2);
+					throw new APException(ERROR_MESSAGE_2);
 				}
 			}
 		}
@@ -213,7 +213,7 @@ class Main implements CalculatorInterface {
 		while (operatorStack.size() > 0) {
 			
 			if (isParenthesis(operatorStack.top().getValue())) {
-				error.println(ERROR_MESSAGE_2);
+				throw new APException(ERROR_MESSAGE_2);
 			}
 			result.add(operatorStack.pop());
 		}
@@ -226,14 +226,15 @@ class Main implements CalculatorInterface {
 		String input;
 		
 		while (in.hasNext()) {
-			input = in.nextLine();
 			
 			try {
+				input = in.nextLine();
 				TokenList infix = readTokens(input);
 				TokenList postfix = shuntingYard(infix);
 				double result = rpn(postfix);
 				out.printf("%f\n", result);
-			} catch (Exception e) {
+			} catch (APException e) {
+				System.out.println(e);
 			}
 		}
 		in.close();
