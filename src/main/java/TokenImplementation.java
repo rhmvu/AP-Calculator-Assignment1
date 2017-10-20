@@ -9,14 +9,17 @@ class TokenImplementation implements Token{
 		this.precedence = precedence;
 	}
 	
+	@Override
 	public String getValue() {
 		return value;
 	}
-
+	
+	@Override
 	public int getType() {
 		return type;
 	}
-
+	
+	@Override
 	public int getPrecedence() {
 		return precedence;
 	}

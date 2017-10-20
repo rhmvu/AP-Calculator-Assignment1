@@ -92,7 +92,8 @@ class Main implements CalculatorInterface {
 		
 		return result;
 	}
-
+	
+	@Override
 	public TokenList readTokens(String input) throws APException {
 		String[] tokenArray = input.split("\\s+"); // splits string in space and creates an array with  only the tokens
 		TokenList result = new TokenListImplementation(tokenArray.length);
@@ -143,7 +144,8 @@ class Main implements CalculatorInterface {
 		
 		return operation;
 	}
-
+	
+	@Override
 	public Double rpn(TokenList tokens) throws APException {
 		DoubleStack stack = new DoubleStackImplementation(tokens.size());
 		Token token;
@@ -174,7 +176,8 @@ class Main implements CalculatorInterface {
 		
 		return stack.top();
 	}
-
+	
+	@Override
 	public TokenList shuntingYard(TokenList tokens) throws APException {
 		TokenList result = new TokenListImplementation(tokens.size());
 		TokenStack operatorStack = new TokenStackImplementation(tokens.size());

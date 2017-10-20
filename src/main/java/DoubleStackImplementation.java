@@ -9,11 +9,13 @@ class DoubleStackImplementation implements DoubleStack{
 		numberOfElements = 0;
 	}
 	
+	@Override
 	public void push(Double element) {
 		doubleArray[numberOfElements] = element;
 		numberOfElements +=1;
 	}
 	
+	@Override
 	public Double pop() {
 		double result = doubleArray[numberOfElements - 1];
 		doubleArray[numberOfElements - 1] = null;
@@ -22,10 +24,12 @@ class DoubleStackImplementation implements DoubleStack{
 		return result;
 	}
 	
+	@Override
 	public Double top() {
 		return doubleArray[numberOfElements - 1];
 	}
 	
+	@Override
 	public int size() {
 		return numberOfElements;
 	}
