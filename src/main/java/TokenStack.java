@@ -6,6 +6,7 @@
 public interface TokenStack {
 
     /**
+     * @param - the token to be pushed.
      * @pre -
      * @post token Token is now at the top of the stack.
      */

@@ -15,7 +15,6 @@ public interface Token {
      */
     String getValue();
 
-
     /**
      * @pre -
      * @post The type of this object, represented as an int, has been returned.
@@ -30,5 +29,4 @@ public interface Token {
      * the result of this method is -1.
      */
     int getPrecedence();
-
 }

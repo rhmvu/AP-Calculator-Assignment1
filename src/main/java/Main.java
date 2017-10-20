@@ -1,6 +1,4 @@
 import java.io.PrintStream;
-import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.Scanner;
 
 class Main implements CalculatorInterface {
@@ -26,11 +24,9 @@ class Main implements CalculatorInterface {
 								LOW_PRECEDENCE = 1;
 	
 	PrintStream out;
-	PrintStream error;
 
     Main(){
         out = new PrintStream(System.out);
-        error = new PrintStream(System.err);
     }
 
 	private double power(double base, double power){

@@ -12,7 +12,6 @@ interface TokenList {
      */
     void add(Token token);
 
-
     /**
      *
      * @pre index < size() and index >= 0

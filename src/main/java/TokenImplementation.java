@@ -23,5 +23,4 @@ class TokenImplementation implements Token{
 	public int getPrecedence() {
 		return precedence;
 	}
-
 }
