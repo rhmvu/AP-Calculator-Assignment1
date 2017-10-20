@@ -1,32 +1,37 @@
+import java.io.PrintStream;
+import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.Scanner;
 
 class Main implements CalculatorInterface {
 
-	static final String OPERATORS = "+-*/^", 
-						OPEN_PARENTHESIS = "(", 
-						CLOSE_PARENTHESIS = ")", 
-						ADDITION = "+",
-						SUBSTRACTION = "-", 
-						MULTIPLICATION = "*", 
-						DIVISION = "/", POWER = "^",
-						ADDITION_SUBSTRACTION = "+-",
-						ADDITION_ADDITION= "++", 
-						SUBSTRACTION_ADDITION = "-+", 
-						SUBSTRACTION_SUBSTRACTION = "--",
-						WELCOME_MESSAGE = "Welcome to Basic Calculator by Kostas Mountzakis and Ruben van der Ham\nType 'exit' to exit\n"
-										+ "Use argument 'help' for more info\nType your input below:",
-						ERROR_MESSAGE = "Invalid token in the arithmetic expression. Please fix your input. Try argument 'help' for more information",
-						ERROR_MESSAGE_2 = "Mismatched parenthesis detected. Please check your input. Try argument 'help' for more information",
-						ERROR_MESSAGE_3 = "Invalid input, remaining numbers on stack. Please fix your input. Try argument 'help' for more information",
-						ERROR_MESSAGE_4 = "Invalid input, Try argument 'help' for more information\nOperation misses an operand for operation: ",
-						ERROR_MESSAGE_5 = "Input results a calculation this calculator's power function can not handle, please use lower (or higher) operands",
-						HELP_MESSAGE = "This basic calculator works with operators +,-,*,/,^ and parenthesis '(' and ')'.\n"
-										+ "Basic Calculator REQUIRES you to put a space between each character.\nFor example:'93 * 38 / ( 1 * ( ( 72 ) ) ) * 23'\n\n"
-										+ "Basic Calculator by Kostas Moumtzakis & Ruben van der Ham";
-	static final int NON_OPERATOR_PRECEDENCE = -1, 
-						HIGH_PRECEDENCE = 3, 
-						MEDIUM_PRECEDENCE = 2, 
-						LOW_PRECEDENCE = 1;
+	private static final String OPEN_PARENTHESIS = "(", 
+								CLOSE_PARENTHESIS = ")", 
+								ADDITION = "+",
+								SUBSTRACTION = "-", 
+								MULTIPLICATION = "*", 
+								DIVISION = "/", POWER = "^",
+								ADDITION_SUBSTRACTION = "+-",
+								ADDITION_ADDITION= "++", 
+								SUBSTRACTION_ADDITION = "-+", 
+								SUBSTRACTION_SUBSTRACTION = "--",
+								ERROR_MESSAGE = "Invalid token in the arithmetic expression. Please fix your input.",
+								ERROR_MESSAGE_2 = "Mismatched parenthesis detected. Please check your input.",
+								ERROR_MESSAGE_3 = "Invalid input, remaining numbers on stack. Please fix your input.",
+								ERROR_MESSAGE_4 = "Invalid input, operation misses an operand for operation: ",
+								ERROR_MESSAGE_5 = "Input results a calculation this calculator's power function can not handle, please fix your operands";
+	private static final int NON_OPERATOR_PRECEDENCE = -1, 
+								HIGH_PRECEDENCE = 3, 
+								MEDIUM_PRECEDENCE = 2, 
+								LOW_PRECEDENCE = 1;
+	
+	PrintStream out;
+	PrintStream error;
+
+    Main(){
+        out = new PrintStream(System.out);
+        error = new PrintStream(System.err);
+    }
 
 	private double power(double base, double power){
 		if (power == 0) {
@@ -82,8 +87,7 @@ class Main implements CalculatorInterface {
 		} else if (isParenthesis(token)) {
 			result = new TokenImplementation(token, Token.PARENTHESIS_TYPE, NON_OPERATOR_PRECEDENCE);
 		} else {
-			System.err.println(ERROR_MESSAGE);
-			System.exit(1);
+			error.println(ERROR_MESSAGE);
 		}
 		
 		return result;
@@ -121,8 +125,7 @@ class Main implements CalculatorInterface {
 			try{
 				result = power(operand2, operand1);
 			}catch(StackOverflowError e){
-				System.out.println(ERROR_MESSAGE_5);
-				System.exit(1);
+				error.println(ERROR_MESSAGE_5);
 			}
 			break;
 		}
@@ -160,15 +163,13 @@ class Main implements CalculatorInterface {
 					stack.push(operationResult);
 					
 				} catch (ArrayIndexOutOfBoundsException e) {
-					System.out.printf("%s'%s'\n", ERROR_MESSAGE_4, token.getValue());
-					System.exit(1);
+					error.printf("%s'%s'\n", ERROR_MESSAGE_4, token.getValue());
 				}
 			}
 		}
 
 		if (stack.size() != 1) {
-			System.err.println(ERROR_MESSAGE_3);
-			System.exit(1);
+			error.println(ERROR_MESSAGE_3);
 		}
 		
 		return stack.top();
@@ -204,8 +205,7 @@ class Main implements CalculatorInterface {
 				if (operatorStack.top().getValue().equals(OPEN_PARENTHESIS)) {
 					operatorStack.pop();	
 				} else {
-					System.err.println(ERROR_MESSAGE_2);
-					System.exit(1);
+					error.println(ERROR_MESSAGE_2);
 				}
 			}
 		}
@@ -213,8 +213,7 @@ class Main implements CalculatorInterface {
 		while (operatorStack.size() > 0) {
 			
 			if (isParenthesis(operatorStack.top().getValue())) {
-				System.out.println(ERROR_MESSAGE_2);
-				System.exit(1);
+				error.println(ERROR_MESSAGE_2);
 			}
 			result.add(operatorStack.pop());
 		}
@@ -223,29 +222,21 @@ class Main implements CalculatorInterface {
 	}
 
 	private void start() {
-		System.out.printf("%s\n", WELCOME_MESSAGE);
-		
 		Scanner in = new Scanner(System.in);
 		String input;
 		
 		while (in.hasNext()) {
 			input = in.nextLine();
 			
-			if (input.equals("exit")) {
-				System.out.println("Basic Calculator closed by user");
-				System.exit(0);
+			try {
+				TokenList infix = readTokens(input);
+				TokenList postfix = shuntingYard(infix);
+				double result = rpn(postfix);
+				out.printf("%f\n", result);
+			} catch (Exception e) {
 			}
-			if (input.equals("help")) {
-				System.out.println(HELP_MESSAGE);
-				System.exit(0);
-			}
-			TokenList infix = readTokens(input);
-			TokenList postfix = shuntingYard(infix);
-			double result = rpn(postfix);
-			System.out.println(result);
 		}
 		in.close();
-		System.exit(0);
 	}
 
 	public static void main(String[] argv) {
